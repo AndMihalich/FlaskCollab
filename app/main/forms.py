@@ -39,16 +39,15 @@ class EditProfileAdminForm(EditProfileForm):
     role = SelectField('Role', coerce=int)
     submit = SubmitField('Save changes')
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(EditProfileAdminForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
-        self.user = user
 
     def validate_email(self, field):
-        if field.data != self.user.email and User.query.filter_by(email=field.data).first():
+        if not User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered')
 
     def validate_username(self, field):
-        if field.data!=self.user.username and User.query.filter_by(username=field.data).first():
+        if not User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already exists')
 

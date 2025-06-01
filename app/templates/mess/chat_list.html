@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Chat Rooms{% endblock %}
+
+{% block page_content %}
+  <h2>Your Chats</h2>
+
+  {% if rooms %}
+    <ul class="list-group mb-4">
+      {% for room in rooms %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            {% for user in room.members %}
+              {% if user.id != current_user.id %}
+                <a href="{{ url_for("main.userdb_user", username=user.username) }}" style="text-decoration: none"><strong>{{ user.username }}</strong></a> | {{user.first_name+' '+user.last_name}}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <a href="{{ url_for('mess.chat_room', room_id=room.id) }}" class="btn btn-sm btn-primary">
+            Open Chat
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You don't have any chats yet.</p>
+  {% endif %}
+
+  <h4>Start New Chat</h4>
+  <form method="POST">
+    <div class="input-group flex-nowrap">
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
+      <span class="input-group-text" id="inputGroup-sizing-lg">@</span>
+      {{ form.username(class_="form-control") }}
+      {{form.submit(class="btn btn-success", value="Start Chat")}}
+    </div>
+  </form>
+{% endblock %}

@@ -59,7 +59,7 @@ def auth_admin():
     elif current_user!=admin:
         logout_user()
         login_user(admin)
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.userdb_user', username=admin.username, user=admin))
 
 @auth.route('/auth-random')
 def auth_random():
@@ -74,4 +74,4 @@ def auth_random():
     else:
         return redirect(url_for('.index'))
 
-    return redirect(url_for('main.index3', username=random_user.username, user=random_user))
+    return redirect(url_for('main.userdb_user', username=random_user.username, user=random_user))

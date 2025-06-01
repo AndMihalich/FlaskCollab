@@ -126,3 +126,52 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, user_id)
+
+
+chat_members = db.Table('chat_members',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('chat_room_id', db.Integer, db.ForeignKey('chat_rooms.id')),
+    prevent_existing=True
+)
+
+
+class ChatRoom(db.Model):
+    __tablename__ = 'chat_rooms'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=True, default=None) 
+    is_private = db.Column(db.Boolean, default=False)
+    members = db.relationship('User', secondary='chat_members', backref='chat_rooms')
+
+
+    @staticmethod 
+    def get_or_create_private_chat(user1, user2):
+        user_ids = sorted([user1.id, user2.id])
+
+        rooms = ChatRoom.query.join(chat_members).filter(
+            chat_members.c.user_id.in_(user_ids),
+            ChatRoom.is_private.is_(True)
+        ).all()
+
+        for room in rooms:
+            member_ids = sorted([u.id for u in room.members])
+            if member_ids == user_ids:
+                return room
+
+        room = ChatRoom(is_private=True)
+        room.members.append(user1)
+        room.members.append(user2)
+        db.session.add(room)
+        db.session.commit()
+        return room
+
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.now())
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'))
+
+    sender = db.relationship('User', backref='messages')
+    room = db.relationship('ChatRoom', backref='messages')

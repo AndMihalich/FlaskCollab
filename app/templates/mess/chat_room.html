@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Chat Room{% endblock %}
+
+{% block page_content %}
+<div class="chat-header d-flex align-items-center gap-3">
+    {% if companion %}
+        <img class="thumbnail" style="border-radius: 5px; width:40px; height:40px;" src="{{companion.gravatar(size=40)}}">
+        <h2 class="mb-0">{{ companion.username }}</h2>
+        <p class="mb-0"> Last seen: <span class="last-seen" data-datetime="{{ companion.last_seen.isoformat() }}"></span></p>
+    {% else %}
+        <h2 class="mb-0">{{ room.name or "Private Chat" }}</h2>
+    {% endif %}
+</div>
+
+<div id="messages">
+  {% for msg in messages %}
+    {% if current_user==msg.sender %}
+            <div class="message-current">
+                {{ msg.content }}
+                <small>{{ msg.timestamp.strftime('%H:%M') }}</small>
+            </div>
+    {% else %}
+            <div class="message-other">
+                {{ msg.content }}
+                <small>{{ msg.timestamp.strftime('%H:%M') }}</small>
+            </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<div class="site-container">
+  <form method="POST" class="sticky-chat-form">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <div class="input-group flex-nowrap">
+      {{ form.content(rows=3, class_="form-control") }}
+      {{ form.submit(class_="btn btn-primary") }}
+    </div>
+  </form>
+</div>
+{% endblock %}
+

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultsList.innerHTML = '';
                 return;
             }
+            
             lastValue = value;
             fetch(`/UserDB_search?q=${encodeURIComponent(value)}`)
                 .then(response => response.json())

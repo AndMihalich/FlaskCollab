@@ -64,27 +64,23 @@ def edit_profile():
 @admin_required
 def edit_profile_admin(id):
     user = User.query.get_or_404(id)
-    form = EditProfileAdminForm(user=user)
+    form = EditProfileAdminForm()
 
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
-        current_user.about_me = form.about_me.data
-        current_user.email = form.email.data
-        
-        if current_user == user:
-            user.role = Role.query.filter_by(name='Admin').first()
-        else:
-            user.role = Role.query.get(form.role.data)
+        user.username = form.username.data
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.about_me = form.about_me.data
+        user.email = form.email.data
+        user.role = Role.query.get(form.role.data)
         db.session.add(user)
         db.session.commit()
         flash('The profile has been updated')
         return redirect(url_for('main.userdb_user', username=user.username))
-
-    form.username.data = current_user.username
-    form.first_name.data = current_user.first_name
-    form.last_name.data = current_user.last_name
+    
+    form.username.data = user.username
+    form.first_name.data = user.first_name
+    form.last_name.data = user.last_name
     form.about_me.data = user.about_me
     form.email.data = user.email
     form.role.data = user.role_id

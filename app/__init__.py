@@ -18,4 +18,7 @@ def create_app(config='default'):
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+    from .messenger import messenger as messenger_blueprint
+    app.register_blueprint(messenger_blueprint, url_prefix='/messenger')
+
     return app
