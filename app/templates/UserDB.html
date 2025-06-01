@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}UserDB{% endblock %}
+
+{% block page_content %}
+<div class="center-form">
+    <form method="post" autocomplete="off">
+        <div class="input-group flex-nowrap">
+            {{form.hidden_tag()}}
+            {{form.csrf_token}}
+            <span class="input-group-text" id="inputGroup-sizing-lg">@</span>
+            {{form.query(class="form-control", placeholder="Search for a user...")}}
+            {{form.submit(class="btn btn-primary", value="Search")}}
+        </div>
+    </form>
+    <ul class="list-group mt-2 user-search-results" style="width: 100%; max-width: 400px;"></ul>
+    <div>
+        {% block user_insert %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+

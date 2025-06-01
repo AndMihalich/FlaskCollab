@@ -1,0 +1,56 @@
+{% extends "UserDB.html" %}
+
+
+{% block title %}UserDB - {{username}}{% endblock %}
+
+{% block user_insert %}
+    <hr class="border border-secondary border-2 opacity-75">
+    <div class="user-profile">
+
+    <div style="text-align: center;">
+        <img class="img-thumbnail" src="{{user.gravatar(size=256)}}">
+        
+        <h1>{{user.first_name}} {{user.last_name}}</h1>
+
+        <h5>@{{user.username}}</h5>
+
+        {% if user.role_id==1 %}
+            <div class="badge bg-primary">Student</div>
+        {% elif user.role_id==2 %}
+            <div class="badge bg-danger">Professor</div>
+        {% elif user.role_id==3 %}
+            <div class="badge bg-success">Admin</div>
+        {% endif %}
+
+
+    </div>
+    <p>Email: {{user.email}}</p>
+    <p>
+        Last seen
+        {% if not user.last_seen %}
+            never
+        {% else %}
+            <span class="last-seen" data-datetime="{{ user.last_seen.isoformat() }}"></span>
+        {% endif %}
+    </p>
+
+    <p>
+        {% if user.about_me %}
+        <h2>About me:</h2>
+        <p>{{user.about_me}}</p>
+        {% elif current_user==user %}
+            <a href="{{ url_for('main.edit_profile') }}">Add info about yourself</a>
+        {% endif %}
+    </p>
+
+    <hr class="border border-secondary border-2 opacity-75">
+
+    {% if current_user == user %}
+    <a href="{{ url_for('main.edit_profile') }}" class="btn btn-secondary">Edit Profile</a>
+    {% endif %}
+
+    {% if current_user.is_administrator()%}
+    <a href="{{ url_for('main.edit_profile_admin', id=user.id) }}" class="btn btn-warning">Admin editor</a>
+    {% endif %}
+
+{% endblock %}

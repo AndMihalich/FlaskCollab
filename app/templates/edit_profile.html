@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block page_content %}
+<div class="center-form">
+<div class="page-header">
+    <h1>Edit profile - {%if user is defined%}{{user.username}}{%else%}{{current_user.username}}{%endif%}</h1>
+</div>
+<div class="col-md-4">
+    <form method="post">
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control", placeholder="Username of name") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.first_name.label(class="form-label") }}
+        {{ form.first_name(class="form-control", placeholder="First name") }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.last_name.label(class="form-label") }}
+        {{ form.last_name(class="form-control", placeholder="Last name") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.about_me.label(class="form-label") }}
+        {{ form.about_me(class="form-control", placeholder="About me") }}
+    </div>
+
+    {% if user is defined %}
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="Email") }}
+        </div>
+
+        <div class="mb-3">
+        {{ form.role.label(class="form-label") }}
+        <div>
+            {% for value, label in form.role.choices %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="{{ form.role.name }}" id="role-{{ value }}" value="{{ value }}"
+                        {% if form.role.data == value %}checked{% endif %}>
+                    <label class="form-check-label" for="role-{{ value }}">
+                        {{ label }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+
+    <div class="mb-3">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+    </form>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block page_content %}
+<div class="center-form">
+<div class="page-header">
+    <h1>Register</h1>
+</div>
+<div class="col-md-4">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", placeholder="Username") }}
+        </div>
+        <div class="mb-3">
+            {{ form.first_name.label(class="form-label") }}
+            {{ form.first_name(class="form-control", placeholder="First name") }}
+        </div>
+        <div class="mb-3">
+            {{ form.last_name.label(class="form-label") }}
+            {{ form.last_name(class="form-control", placeholder="Last_name") }}
+        </div>
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="email") }}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Password") }}
+        </div>
+        <div class="mb-3">
+            {{ form.password2.label(class="form-label") }}
+            {{ form.password2(class="form-control", placeholder="Repit password") }}
+        </div>
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary", value="Register") }}
+        </div>
+    </form>
+</div>
+</div>
+
+{% endblock %}
