@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Your Subjects{% endblock %}
+
+{% block page_content %}
+<div class="container mt-4">
+    <h2>Your Subjects</h2>
+
+    {% if subjects %}
+      <ul class="list-group mb-4">
+        {% for subj in subjects %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ subj.name }}</strong>
+              <small class="text-muted ms-2">
+                by <a href="{{ url_for('main.userdb_user', username=subj.teacher.username) }}">{{ subj.teacher.first_name }} {{ subj.teacher.last_name }}</a>
+              </small>
+              {% if subj.teacher_id == current_user.id %}
+                <span class="badge bg-primary ms-2">Professor</span>
+              {% endif %}
+            </div>
+            <div>
+              <span class="badge bg-secondary me-2">Code: {{ subj.code }}</span>
+              <a href="{{ url_for('subj.subject_detail', subject_id=subj.id) }}" class="btn btn-sm btn-outline-primary">Open</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>You are not enrolled in any subjects.</p>
+    {% endif %}
+
+    {% if current_user.is_professor() %}
+        <a href="{{ url_for('subj.create_subject') }}" class="btn btn-success me-2">Create Subject</a>
+    {% endif %}
+    <a href="{{ url_for('subj.join_subject') }}" class="btn btn-primary">Join Subject</a>
+</div>
+{% endblock %}

@@ -36,3 +36,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var messages = document.getElementById('messages');
+    if (messages) {
+        messages.scrollTop = messages.scrollHeight;
+    }
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+    var chatBottom = document.getElementById('chat-bottom');
+    if (chatBottom) {
+        chatBottom.scrollIntoView({ behavior: 'auto' });
+    }
+});

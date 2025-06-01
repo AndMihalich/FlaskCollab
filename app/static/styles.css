@@ -27,6 +27,7 @@
     padding-right: 0.25rem;
   }
 }
+
 .center-form {
   display: flex;
   flex-direction: column;
@@ -80,6 +81,9 @@
   max-width: 60%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin-left: 20%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .message-other {
@@ -91,6 +95,9 @@
   max-width: 60%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin-right: 20%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 @media (max-width: 600px) {

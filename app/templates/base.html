@@ -25,6 +25,9 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{ url_for("mess.chats") }}">Chats</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ url_for("subj.subject_list") }}">Subjects</a>
+          </li>
         </ul>
         <span class="navbar-text ms-auto">
           {% if current_user.is_authenticated %}

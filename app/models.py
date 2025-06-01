@@ -111,6 +111,9 @@ class User(db.Model, UserMixin):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+    
+    def is_professor(self):
+        return self.can(Permission.CREATE)
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -175,3 +178,28 @@ class Message(db.Model):
 
     sender = db.relationship('User', backref='messages')
     room = db.relationship('ChatRoom', backref='messages')
+
+
+subject_students = db.Table('subject_students',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('subject_id', db.Integer, db.ForeignKey('subjects.id'))
+)
+
+class Subject(db.Model):
+    __tablename__ = 'subjects'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    code = db.Column(db.String(10), unique=True, nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+    teacher = db.relationship('User', backref='taught_subjects', foreign_keys=[teacher_id])
+    students = db.relationship('User', secondary=subject_students, backref='subjects')
+    posts = db.relationship('SubjectPost', backref='subject', lazy='dynamic')
+
+class SubjectPost(db.Model):
+    __tablename__ = 'subject_posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    filename = db.Column(db.String(200))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    uploaded_at = db.Column(db.DateTime, default=datetime.now)

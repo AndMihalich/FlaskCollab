@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{subject.name}}{% endblock %}
+
+{% block page_content %}
+<div class="container mt-4">
+  <h2>{{ subject.name }}</h2>
+
+  <p class="text-muted">
+  Teacher: <a href="{{ url_for('main.userdb_user', username=subject.teacher.username) }}">
+    {{ subject.teacher.first_name }} {{ subject.teacher.last_name }}
+  </a>
+</p>
+
+  {% if current_user.id == subject.teacher_id %}
+    <div class="card mb-4">
+      <div class="card-header">Upload Material</div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.title.label(class_="form-label") }}
+            {{ form.title(class_="form-control") }}
+          </div>
+          <div class="mb-3">
+            {{ form.file.label(class_="form-label") }}
+            {{ form.file(class_="form-control") }}
+          </div>
+          <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+
+  <h4>Materials</h4>
+  {% if posts %}
+    <ul class="list-group">
+      {% for post in posts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ post.title }}</strong><br>
+            <small class="text-muted">Uploaded {{ post.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</small>
+          </div>
+          <a href="{{ url_for('static', filename='uploads/' + post.filename) }}" class="btn btn-sm btn-outline-primary" download>
+            Download
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No materials uploaded yet.</p>
+  {% endif %}
+
+  <a href="{{ url_for('subj.subject_list') }}" class="btn btn-link mt-3">← Back to Subjects</a>
+</div>
+{% endblock %}

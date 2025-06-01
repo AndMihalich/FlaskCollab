@@ -21,4 +21,7 @@ def create_app(config='default'):
     from .messenger import messenger as messenger_blueprint
     app.register_blueprint(messenger_blueprint, url_prefix='/messenger')
 
+    from .subjects import subjects as subjects_blueprint
+    app.register_blueprint(subjects_blueprint, url_prefix='/subjects')
+    
     return app
