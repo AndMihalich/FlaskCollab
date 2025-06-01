@@ -47,6 +47,8 @@
 
     {% if current_user == user %}
     <a href="{{ url_for('main.edit_profile') }}" class="btn btn-secondary">Edit Profile</a>
+    {% else %}
+    <a href="{{ url_for('mess.chat_room', room_id=ChatRoom.get_or_create_private_chat(current_user, user).id) }}" class="btn btn-primary">Chat with {{ user.username }}</a>
     {% endif %}
 
     {% if current_user.is_administrator()%}

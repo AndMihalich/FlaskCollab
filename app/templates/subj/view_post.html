@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}View file{% endblock %}
+
+{% block page_content %}
+<div class="container mt-4">
+  <h2>{{ post.title }}</h2>
+  <p class="text-muted">
+    From subject <a href="{{ url_for('subj.subject_detail', subject_id=subject.id) }}">{{ subject.name }}</a>
+  </p>
+
+  <div id="file-content" class="border p-3 mb-3" style="white-space: pre-wrap; cursor: text;">
+    {{ content }}
+  </div>
+
+  <button id="ask-btn" class="btn btn-warning d-none" data-bs-toggle="modal" data-bs-target="#askModal">
+    Ask a Question About Selection
+  </button>
+
+  <div class="modal fade" id="askModal" tabindex="-1" aria-labelledby="askModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" method="POST" action="{{ url_for('subj.ask_question', subject_id=subject.id, post_id=post.id) }}">
+        <div class="modal-header">
+          <h5 class="modal-title">Ask a Question</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="selected_text" id="selected-text">
+          <div class="mb-3">
+            <label for="message" class="form-label">Your Question</label>
+            <textarea class="form-control" name="message" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Send to Teacher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const contentDiv = document.getElementById("file-content");
+  const askBtn = document.getElementById("ask-btn");
+  const selectedTextInput = document.getElementById("selected-text");
+
+  contentDiv.addEventListener("mouseup", () => {
+    const selection = window.getSelection().toString().trim();
+    if (selection.length > 0) {
+      askBtn.classList.remove("d-none");
+      selectedTextInput.value = selection;
+    } else {
+      askBtn.classList.add("d-none");
+      selectedTextInput.value = "";
+    }
+  });
+</script>
+{% endblock %}

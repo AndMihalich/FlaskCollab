@@ -203,3 +203,4 @@ class SubjectPost(db.Model):
     filename = db.Column(db.String(200))
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     uploaded_at = db.Column(db.DateTime, default=datetime.now)
+

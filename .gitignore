@@ -14,3 +14,6 @@ migrations/
 
 #databases
 *.sqlite
+
+#files
+app/static/uploads/*.*

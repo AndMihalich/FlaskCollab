@@ -24,4 +24,13 @@ def create_app(config='default'):
     from .subjects import subjects as subjects_blueprint
     app.register_blueprint(subjects_blueprint, url_prefix='/subjects')
     
+    
+    from .models import ChatRoom, Permission
+    @app.context_processor
+    def inject_globals():
+        return {
+            'ChatRoom': ChatRoom,
+            'Permission': Permission
+        }
+
     return app

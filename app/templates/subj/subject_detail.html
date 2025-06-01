@@ -44,6 +44,9 @@
           <a href="{{ url_for('static', filename='uploads/' + post.filename) }}" class="btn btn-sm btn-outline-primary" download>
             Download
           </a>
+          <a href="{{ url_for('subj.view_post', subject_id=subject.id, post_id=post.id) }}" class="btn btn-sm btn-outline-primary">
+            View
+          </a>
         </li>
       {% endfor %}
     </ul>
