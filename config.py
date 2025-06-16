@@ -13,3 +13,20 @@ class Config:
     def init_app(app):
         pass
 
+class DockerConfig(Config):
+    NAME = 'docker'
+
+    @classmethod
+    def init_app(cls, app):
+        import logging
+        from logging import StreamHandler
+        file_handler = StreamHandler()
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+
+
+config = {
+    'docker': DockerConfig,
+
+    'default': Config
+}
